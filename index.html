@@ -1,102 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 Lap Times</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        table {
-            margin: 20px auto;
-            border-collapse: collapse;
-            width: 60%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 10px;
-        }
-        canvas {
-            max-width: 80%;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <h1>F1 Lap Time Tracker</h1>
-    <table>
-        <tr>
-            <th>Driver</th>
-            <th>Number</th>
-            <th>Track</th>
-            <th>Lap Time (seconds)</th>
-        </tr>
-        <tr>
-            <td>Max Verstappen</td>
-            <td>33</td>
-            <td>Monaco</td>
-            <td>72.3</td>
-        </tr>
-        <tr>
-            <td>Lewis Hamilton</td>
-            <td>44</td>
-            <td>Monaco</td>
-            <td>73.1</td>
-        </tr>
-        <tr>
-            <td>Charles Leclerc</td>
-            <td>16</td>
-            <td>Monaco</td>
-            <td>72.8</td>
-        </tr>
-    </table>
-    
-    <canvas id="lapTimeChart"></canvas>
-    
-    <script>
-        const ctx = document.getElementById('lapTimeChart').getContext('2d');
-        const lapTimeChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Bahrain', 'Monaco', 'Silverstone', 'Spa'],
-                datasets: [
-                    {
-                        label: 'Max Verstappen',
-                        data: [91.2, 72.3, 89.1, 101.5],
-                        borderColor: 'red',
-                        fill: false
-                    },
-                    {
-                        label: 'Lewis Hamilton',
-                        data: [92.5, 73.1, 90.4, 102.3],
-                        borderColor: 'blue',
-                        fill: false
-                    },
-                    {
-                        label: 'Charles Leclerc',
-                        data: [91.8, 72.8, 89.6, 101.9],
-                        borderColor: 'yellow',
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false
-                    }
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+
+const tracks = [
+  "Monza", "Silverstone", "Monaco", "Suzuka", "Spa", "Bahrain", "Hungaroring", "Barcelona", "Imola", "Zandvoort", 
+  "Shanghai", "Austin", "Jeddah", "Miami", "Melbourne", "Baku", "Singapore", "Las Vegas", "Losail", "Abu Dhabi", 
+  "Canada", "Austria", "Mexico", "Brazil"
+];
+
+const drivers = [
+  "Max Verstappen", "Lewis Hamilton", "Charles Leclerc", "Fernando Alonso", "Lando Norris", "Sergio Perez", 
+  "George Russell", "Carlos Sainz", "Esteban Ocon", "Pierre Gasly", "Valtteri Bottas", "Kevin Magnussen", 
+  "Nico Hulkenberg", "Yuki Tsunoda", "Zhou Guanyu", "Lance Stroll", "Alex Albon", "Logan Sargeant", "Oscar Piastri", "Daniel Ricciardo"
+];
+
+const data = [];
+drivers.forEach(driver => {
+  tracks.forEach(track => {
+    data.push({ driver, track, time: (Math.random() * (110 - 70) + 70).toFixed(3) });
+  });
+});
+
+export default function F1TrackTimes() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">F1 Drivers & Track Times</h1>
+      <Card>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={600}>
+            <ScatterChart>
+              <CartesianGrid />
+              <XAxis type="category" dataKey="track" name="Track" />
+              <YAxis type="number" dataKey="time" name="Best Time (s)" />
+              <Tooltip cursor={{ strokeDasharray: "3 3" }} />
+              <Scatter name="Best Lap Times" data={data} fill="#8884d8" />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
