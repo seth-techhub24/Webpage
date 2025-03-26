@@ -1,76 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<Formula one laptimes></>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Style the top navigation bar */
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-/* Style the topnav links */
-.topnav a {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Style the content */
-.content {
-  background-color: #ddd;
-  padding: 10px;
-  height: 200px; 
-}
-
-/* Style the footer */
-.your mum {
-  background-color: #f1f1f1;
-  padding: 10px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Lap Times</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 60%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        canvas {
+            max-width: 80%;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-
-<div class="topnav">
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-</div>
-
-<div class="content">
-  <h2>CSS Template</h2>
-  <p>A topnav, content and a footer.</p>
-</div>
-
-<div class="footer">
-  <p>Your mum</p>
-</div>
-
+    <h1>F1 Lap Time Tracker</h1>
+    <table>
+        <tr>
+            <th>Driver</th>
+            <th>Number</th>
+            <th>Track</th>
+            <th>Lap Time (seconds)</th>
+        </tr>
+        <tr>
+            <td>Max Verstappen</td>
+            <td>33</td>
+            <td>Monaco</td>
+            <td>72.3</td>
+        </tr>
+        <tr>
+            <td>Lewis Hamilton</td>
+            <td>44</td>
+            <td>Monaco</td>
+            <td>73.1</td>
+        </tr>
+        <tr>
+            <td>Charles Leclerc</td>
+            <td>16</td>
+            <td>Monaco</td>
+            <td>72.8</td>
+        </tr>
+    </table>
+    
+    <canvas id="lapTimeChart"></canvas>
+    
+    <script>
+        const ctx = document.getElementById('lapTimeChart').getContext('2d');
+        const lapTimeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Bahrain', 'Monaco', 'Silverstone', 'Spa'],
+                datasets: [
+                    {
+                        label: 'Max Verstappen',
+                        data: [91.2, 72.3, 89.1, 101.5],
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'Lewis Hamilton',
+                        data: [92.5, 73.1, 90.4, 102.3],
+                        borderColor: 'blue',
+                        fill: false
+                    },
+                    {
+                        label: 'Charles Leclerc',
+                        data: [91.8, 72.8, 89.6, 101.9],
+                        borderColor: 'yellow',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
-
