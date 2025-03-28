@@ -1,43 +1,112 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 2025 Race Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #map { height: 500px; width: 100%; margin-top: 20px; }
+        canvas { max-width: 600px; margin: 20px auto; }
+        select { padding: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>F1 2025 Albert Park Race Times</h1>
+    <select id="driverSelect"></select>
+    <canvas id="raceChart"></canvas>
+    <h2>F1 Tracks Worldwide</h2>
+    <div id="map"></div>
 
-const tracks = [
-  "Monza", "Silverstone", "Monaco", "Suzuka", "Spa", "Bahrain", "Hungaroring", "Barcelona", "Imola", "Zandvoort", 
-  "Shanghai", "Austin", "Jeddah", "Miami", "Melbourne", "Baku", "Singapore", "Las Vegas", "Losail", "Abu Dhabi", 
-  "Canada", "Austria", "Mexico", "Brazil"
-];
+    <script>
+        const driverTimes = {
+            "Max Verstappen": [80.1, 79.8, 79.5],
+            "Lewis Hamilton": [81.2, 80.9, 80.4],
+            "Charles Leclerc": [80.7, 80.3, 80.0],
+            "Sergio Perez": [81.0, 80.6, 80.3],
+            "Fernando Alonso": [81.5, 81.2, 80.9],
+            "Carlos Sainz": [80.9, 80.5, 80.2],
+            "George Russell": [81.1, 80.7, 80.4],
+            "Lando Norris": [80.8, 80.4, 80.1],
+            "Esteban Ocon": [81.6, 81.2, 80.8],
+            "Pierre Gasly": [81.4, 81.1, 80.7],
+            "Oscar Piastri": [80.7, 80.3, 80.0],
+            "Valtteri Bottas": [81.8, 81.5, 81.1],
+            "Zhou Guanyu": [81.9, 81.6, 81.2],
+            "Kevin Magnussen": [82.0, 81.7, 81.3],
+            "Nico Hulkenberg": [82.1, 81.8, 81.4],
+            "Yuki Tsunoda": [81.3, 81.0, 80.6],
+            "Daniel Ricciardo": [81.2, 80.9, 80.5],
+            "Logan Sargeant": [82.2, 81.9, 81.5],
+            "Alexander Albon": [81.0, 80.7, 80.3]
+        };
 
-const drivers = [
-  "Max Verstappen", "Lewis Hamilton", "Charles Leclerc", "Fernando Alonso", "Lando Norris", "Sergio Perez", 
-  "George Russell", "Carlos Sainz", "Esteban Ocon", "Pierre Gasly", "Valtteri Bottas", "Kevin Magnussen", 
-  "Nico Hulkenberg", "Yuki Tsunoda", "Zhou Guanyu", "Lance Stroll", "Alex Albon", "Logan Sargeant", "Oscar Piastri", "Daniel Ricciardo"
-];
+        const select = document.getElementById("driverSelect");
+        Object.keys(driverTimes).forEach(driver => {
+            let option = document.createElement("option");
+            option.value = driver;
+            option.textContent = driver;
+            select.appendChild(option);
+        });
 
-const data = [];
-drivers.forEach(driver => {
-  tracks.forEach(track => {
-    data.push({ driver, track, time: (Math.random() * (110 - 70) + 70).toFixed(3) });
-  });
-});
+        const ctx = document.getElementById("raceChart").getContext("2d");
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Lap 1", "Lap 2", "Lap 3"],
+                datasets: [{
+                    label: select.value,
+                    data: driverTimes[select.value],
+                    borderColor: "red",
+                    fill: false
+                }]
+            }
+        });
 
-export default function F1TrackTimes() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">F1 Drivers & Track Times</h1>
-      <Card>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={600}>
-            <ScatterChart>
-              <CartesianGrid />
-              <XAxis type="category" dataKey="track" name="Track" />
-              <YAxis type="number" dataKey="time" name="Best Time (s)" />
-              <Tooltip cursor={{ strokeDasharray: "3 3" }} />
-              <Scatter name="Best Lap Times" data={data} fill="#8884d8" />
-            </ScatterChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
+        select.addEventListener("change", function() {
+            chart.data.datasets[0].data = driverTimes[this.value];
+            chart.data.datasets[0].label = this.value;
+            chart.update();
+        });
+
+        const map = L.map('map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        const tracks = [
+            { name: "Albert Park", location: [-37.8497, 144.968] },
+            { name: "Silverstone", location: [52.0786, -1.0169] },
+            { name: "Monza", location: [45.6156, 9.2811] },
+            { name: "Spa-Francorchamps", location: [50.4372, 5.9714] },
+            { name: "Suzuka", location: [34.8431, 136.5411] },
+            { name: "Interlagos", location: [-23.7036, -46.6997] },
+            { name: "Shanghai", location: [31.3389, 121.22] },
+            { name: "Baku", location: [40.3777, 49.8670] },
+            { name: "Circuit de Monaco", location: [43.7347, 7.4197] },
+            { name: "Circuit Gilles Villeneuve", location: [45.4706, -73.4415] },
+            { name: "Circuit of the Americas", location: [30.132, -97.6411] },
+            { name: "Hockenheimring", location: [49.3261, 8.5597] },
+            { name: "Hungaroring", location: [47.5789, 19.2556] },
+            { name: "Jeddah", location: [21.4852, 39.1067] },
+            { name: "Las Vegas", location: [36.1699, -115.1398] },
+            { name: "Le Castellet", location: [44.3917, 6.1633] },
+            { name: "Marina Bay", location: [1.2903, 103.8501] },
+            { name: "Mugello", location: [43.8011, 11.2167] },
+            { name: "Nürburgring", location: [50.3385, 6.9472] },
+            { name: "Red Bull Ring", location: [47.2194, 14.7641] },
+            { name: "Sochi", location: [43.4092, 39.9578] },
+            { name: "Silverstone", location: [52.0786, -1.0169] },
+            { name: "Suzuka", location: [34.8431, 136.5411] },
+            { name: "Yas Marina", location: [24.4670, 54.6030] }
+        ];
+
+        tracks.forEach(track => {
+            L.marker(track.location).addTo(map)
+              .bindPopup(`<strong>${track.name}</strong>`);
+        });
+    </script>
+</body>
+</html>
+
