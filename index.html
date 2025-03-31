@@ -1,121 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 2025 Race Tracker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center;}
-        #map { height: 500px; width: 100%; margin-top: 20px; }
-        canvas { max-width: 600px; margin: 20px auto; }
-        select { padding: 5px; margin-top: 10px; }
-    </style>
+<title>F1 laptimes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Style the content */
+.content {
+  background-color: #ddd;
+  padding: 10px;
+  height: 200px; /* Should be removed. Only for demonstration */
+}
+
+/* Style the footer */
+.footer {
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+</style>
 </head>
 <body>
-    <h1>F1 2025 Race Times</h1>
-    <select id="driverSelect"></select>
-    <canvas id="raceChart"></canvas>
-    <h2>F1 Tracks Worldwide</h2>
-    <div id="map"></div>
 
-    <script>
-        const driverTimes = {
-            "Max Verstappen": [80.1, 79.8, 79.5],
-            "Lewis Hamilton": [81.2, 80.9, 80.4],
-            "Charles Leclerc": [80.7, 80.3, 80.0],
-            "Sergio Perez": [81.0, 80.6, 80.3],
-            "Fernando Alonso": [81.5, 81.2, 80.9],
-            "Carlos Sainz": [80.9, 80.5, 80.2],
-            "George Russell": [81.1, 80.7, 80.4],
-            "Lando Norris": [80.8, 80.4, 80.1],
-            "Esteban Ocon": [81.6, 81.2, 80.8],
-            "Pierre Gasly": [81.4, 81.1, 80.7],
-            "Oscar Piastri": [80.7, 80.3, 80.0],
-            "Valtteri Bottas": [81.8, 81.5, 81.1],
-            "Zhou Guanyu": [81.9, 81.6, 81.2],
-            "Kevin Magnussen": [82.0, 81.7, 81.3],
-            "Nico Hulkenberg": [82.1, 81.8, 81.4],
-            "Yuki Tsunoda": [81.3, 81.0, 80.6],
-            "Daniel Ricciardo": [81.2, 80.9, 80.5],
-            "Logan Sargeant": [82.2, 81.9, 81.5],
-            "Alexander Albon": [81.0, 80.7, 80.3]
-        };
 
-        const select = document.getElementById("driverSelect");
-        Object.keys(driverTimes).forEach(driver => {
-            let option = document.createElement("option");
-            option.value = driver;
-            option.textContent = driver;
-            select.appendChild(option);
-        });
 
-        const ctx = document.getElementById("raceChart").getContext("2d");
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["Lap 1", "Lap 2", "Lap 3"],
-                datasets: [{
-                    label: select.value,
-                    data: driverTimes[select.value],
-                    borderColor: "red",
-                    fill: false
-                }]
-            }
-        });
+<div class="content">
+  <h2><a href="https://commons.wikimedia.org/wiki/File:Rickrolling_QR_code.png">Visit W3Schools.com!</a></h2>
+  <p><div class='tableauPlaceholder' id='viz1743390102534' style='position: relative'><noscript><a href='#'><img alt='F1 Circuit Locations ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;S2&#47;S279CMR7C&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='path' value='shared&#47;S279CMR7C' /> <param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;S2&#47;S279CMR7C&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1743390102534');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script></p>
+</div>
 
-        select.addEventListener("change", function() {
-            chart.data.datasets[0].data = driverTimes[this.value];
-            chart.data.datasets[0].label = this.value;
-            chart.update();
-        });
+<div class="footer">
+  <p></p>
+</div>
 
-        const map = L.map('map').setView([20, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-        const tracks = [
-            { name: "Albert Park", location: [-37.8497, 144.968] },
-            { name: "Silverstone", location: [52.0786, -1.0169] },
-            { name: "Monza", location: [45.6156, 9.2811] },
-            { name: "Spa-Francorchamps", location: [50.4372, 5.9714] },
-            { name: "Suzuka", location: [34.8431, 136.5411] },
-            { name: "Interlagos", location: [-23.7036, -46.6997] },
-            { name: "Shanghai", location: [31.3389, 121.22] },
-            { name: "Baku", location: [40.3777, 49.8670] },
-            { name: "Circuit de Monaco", location: [43.7347, 7.4197] },
-            { name: "Circuit Gilles Villeneuve", location: [45.4706, -73.4415] },
-            { name: "Circuit of the Americas", location: [30.132, -97.6411] },
-            { name: "Hockenheimring", location: [49.3261, 8.5597] },
-            { name: "Hungaroring", location: [47.5789, 19.2556] },
-            { name: "Jeddah", location: [21.4852, 39.1067] },
-            { name: "Las Vegas", location: [36.1699, -115.1398] },
-            { name: "Le Castellet", location: [44.3917, 6.1633] },
-            { name: "Marina Bay", location: [1.2903, 103.8501] },
-            { name: "Mugello", location: [43.8011, 11.2167] },
-            { name: "Nürburgring", location: [50.3385, 6.9472] },
-            { name: "Red Bull Ring", location: [47.2194, 14.7641] },
-            { name: "Sochi", location: [43.4092, 39.9578] },
-            { name: "Yas Marina", location: [24.4670, 54.6030] }
-        ];
-
-        tracks.forEach(track => {
-            L.marker(track.location).addTo(map)
-                .bindPopup(`<strong>${track.name}</strong><br>Best Lap Times for ${select.value}:`)
-                .on('click', function() {
-                    const bestTimes = driverTimes[select.value];
-                    const timesText = `
-                        <strong>Best Lap Times for ${select.value} at ${track.name}:</strong>
-                        <ul>
-                            <li>Lap 1: ${bestTimes[0]}</li>
-                            <li>Lap 2: ${bestTimes[1]}</li>
-                            <li>Lap 3: ${bestTimes[2]}</li>
-                        </ul>
-                    `;
-                    this.setPopupContent(timesText);
-                });
-        });
-    </script>
 </body>
 </html>
+
+
